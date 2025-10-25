@@ -1,0 +1,145 @@
+﻿@* Views/Shared/_Layout.cshtml *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyTodoApp.Mvc2</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyTodoApp.Mvc.styles.css" asp-append-version="true" />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="d-flex flex-column min-vh-100 theme-auto">
+    <!-- Top gradient navbar -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-sm navbar-dark nav-gradient shadow-sm backdrop-blur">
+            <div class="container">
+                <a class="navbar-brand fw-semibold d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i data-lucide="check-square"></i>
+                    <span>MyTodoApp</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#topNav" aria-controls="topNav"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div id="topNav" class="navbar-collapse collapse justify-content-between">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link @Html.ActiveWhen("Home", "Index")" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i data-lucide="home" class="me-1"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Html.ActiveWhen("Home", "Privacy")" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i data-lucide="shield" class="me-1"></i> Privacy
+                            </a>
+                        </li>
+                        <partial name="_TodoActionsPartial" />
+                        <partial name="_AdminActionsPartial" />
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <!-- Theme toggle -->
+                        <button class="btn btn-sm btn-glass d-flex align-items-center gap-1" id="themeToggle" type="button"
+                                title="Toggle theme">
+                            <i data-lucide="sun" class="theme-icon-sun d-none"></i>
+                            <i data-lucide="moon" class="theme-icon-moon d-none"></i>
+                            <span class="d-none d-md-inline">Theme</span>
+                        </button>
+
+                        <partial name="_LoginPartial" />
+                        <partial name="_UserProfilePartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Optional hero stripe (auto-hides if no Title) -->
+    <section class="hero-bar py-3">
+        <div class="container d-flex align-items-center justify-content-between gap-3">
+            <div>
+                <h1 class="h4 m-0 text-gradient">@ViewData["Title"]</h1>
+                @if (!string.IsNullOrWhiteSpace(Convert.ToString(ViewData["Subtitle"])))
+                {
+                    <p class="m-0 text-secondary small">@ViewData["Subtitle"]</p>
+                }
+            </div>
+            <div class="d-none d-md-flex align-items-center gap-2">
+                <span class="badge bg-candy">Tasks</span>
+                <span class="badge bg-berry">Focus</span>
+                <span class="badge bg-mint">Done</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container my-4 flex-grow-1">
+        <!-- Flash messages -->
+        <partial name="_FlashMessages" />
+
+        <!-- Optional: Stats component -->
+        @* <div class="mb-3"><vc:stats /></div> *@
+
+        <main role="main" class="pb-4">
+            <div class="content-card p-4 p-lg-5 rounded-4 shadow-soft backdrop-blur">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer-stripe text-muted small py-3 mt-auto">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span>&copy; 2025 · MyTodoApp.Mvc2</span>
+            <div class="d-flex align-items-center gap-3">
+                <a class="link-light link-underline" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <a class="link-light link-underline" href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Icons
+            lucide.createIcons();
+
+            // Theme toggle logic
+            const root = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            const sun = document.querySelector('.theme-icon-sun');
+            const moon = document.querySelector('.theme-icon-moon');
+
+            const applyIcons = (mode) => {
+                sun.classList.toggle('d-none', mode !== 'light');
+                moon.classList.toggle('d-none', mode !== 'dark');
+            };
+
+            const stored = localStorage.getItem('theme');
+            let mode = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.body.classList.remove('theme-auto');
+            document.body.classList.add(`theme-${mode}`);
+            applyIcons(mode);
+
+            btn?.addEventListener('click', () => {
+                mode = (mode === 'light') ? 'dark' : 'light';
+                document.body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
+                document.body.classList.add(`theme-${mode}`);
+                localStorage.setItem('theme', mode);
+                applyIcons(mode);
+            });
+        });
+    </script>
+</body>
+</html>

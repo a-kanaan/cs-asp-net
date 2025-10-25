@@ -1,0 +1,22 @@
+﻿@{
+    var ok = TempData["Success"] as string;
+    var warn = TempData["Warning"] as string;
+    var err = TempData["Error"] as string;
+    var info = TempData["Info"] as string;
+}
+@if (ok != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert"><i data-lucide="thumbs-up" class="me-2"></i>@ok</div>
+}
+@if (info != null)
+{
+    <div class="alert alert-primary d-flex align-items-center" role="alert"><i data-lucide="info" class="me-2"></i>@info</div>
+}
+@if (warn != null)
+{
+    <div class="alert alert-warning d-flex align-items-center" role="alert"><i data-lucide="alert-triangle" class="me-2"></i>@warn</div>
+}
+@if (err != null)
+{
+    <div class="alert alert-danger d-flex align-items-center" role="alert"><i data-lucide="x-octagon" class="me-2"></i>@err</div>
+}
