@@ -1,0 +1,29 @@
+﻿@using TodoApp.Mvc.Models.TodosViewModels
+@model TodoItem
+
+<div class="card" style="max-width: 500px;">
+    <div class="card-body">
+        <form asp-controller="Todos" asp-action="UpdateItem" method="post">
+            <input type="hidden" asp-for="@Model.Id" />
+            <input type="hidden" asp-for="@Model.OwnerId" />
+
+            <div class="mb-3">
+                <label asp-for="@Model.Title" class="form-label">Title</label>
+                <input asp-for="@Model.Title" class="form-control" />
+            </div>
+            <div class="mb-3 form-check">
+                <label asp-for="@Model.IsDone" class="form-check-label">Is Done</label>
+                <input type="checkbox" asp-for="@Model.IsDone" class="form-check-input" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.DueAt" class="form-label">Due At</label>
+                <input asp-for="@Model.DueAt" type="datetime-local" class="form-control" />
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+
+        @* <a asp-controller="Todos" asp-action="Index" class="btn btn-primary">Back to List</a> *@
+    </div>
+</div>

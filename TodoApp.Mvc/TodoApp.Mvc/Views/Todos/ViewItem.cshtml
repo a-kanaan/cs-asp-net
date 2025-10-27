@@ -1,0 +1,16 @@
+﻿@using Humanizer
+@using TodoApp.Mvc.Models.TodosViewModels
+@model TodoItem
+
+<div class="card" style="max-width: 500px;">
+    <div class="card-body">
+        <h4>@Model.Title</h4>
+
+        <p><strong>ID: </strong> @Model.Id</p>
+        <p><strong>Owner ID: </strong> @Model.OwnerId</p>
+        <p><strong>Is Done: </strong> @(Model.IsDone ? "Yes" : "No")</p>
+        <p><strong>Due At:</strong> @Model.DueAt.Humanize()</p>
+
+        <a asp-controller="Todos" asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿@using Humanizer
+@using TodoApp.Mvc.Models.TodosViewModels
+@model TodoViewModel
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Is Done</th>
+            <th>Due At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TodoItems)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>
+                    <input type="checkbox" asp-for="@item.IsDone" disabled />
+                </td>
+                <td>@item.DueAt.Humanize()</td>
+                <td>
+                    <a asp-controller="Todos" asp-action="ViewItem" asp-route-id="@item.Id">View</a>
+                    |
+                    <a asp-controller="Todos" asp-action="EditItem" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
